@@ -19,6 +19,8 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
   /** @var \Drupal\views_templates\ViewsTemplateLoaderInterface $template_loader */
   protected $template_loader;
 
+  protected $loaded_template;
+
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ViewsTemplateLoaderInterface $loader) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->template_loader = $loader;
@@ -46,7 +48,6 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
     $view_template['id'] = $options['id'];
     $view_template['label'] = $options['label'];
     $view_template['description'] = $options['description'];
-    $this->alterViewTemplateAfterCreation($view_template, $options);
     return View::create($view_template);
   }
 
@@ -100,7 +101,13 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
    * @return object
    */
   protected function loadTemplate() {
-    return $this->template_loader->load($this);
+    if (empty($this->loaded_template)) {
+      $template = $this->template_loader->load($this);
+      $this->alterViewTemplateAfterCreation($template);
+      $this->loaded_template = $template;
+    }
+
+    return $this->loaded_template;
   }
 
   /**
@@ -108,7 +115,7 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
    *
    * @param \Drupal\views_templates\Entity\ViewTemplate $view_template
    */
-  protected function alterViewTemplateAfterCreation(&$view_template, $options) {
+  protected function alterViewTemplateAfterCreation(&$view_template, $options = NULL) {
     if ($replace_values = $this->getDefinitionValue('replace_values')) {
       $this->replaceTemplateKeyAndValues($view_template, $replace_values);
     }
@@ -130,18 +137,31 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
    */
   protected function replaceTemplateKeyAndValues(array &$template_elements, array $replace_values) {
     foreach ($template_elements as $key => &$value) {
-      foreach ($replace_values as $replace_key => $replace_value) {
-        if ($value === $replace_key) {
-          $value = $replace_value;
-        }
-        if (is_array($value)) {
-          $this->replaceTemplateKeyAndValues($value, $replace_values);
-        }
-        if ($key === $replace_key) {
-          $template_elements[$replace_value] = $value;
-          unset($template_elements[$key]);
-        }
+      if (is_array($value)) {
+        $this->replaceTemplateKeyAndValues($value, $replace_values);
       }
+      else {
+        foreach ($replace_values as $replace_key => $replace_value) {
+          if (!is_array($value)) {
+            if (is_string($value)) {
+              if (stripos($value,$replace_key) !== FALSE) {
+                $value = str_replace($replace_key, $replace_value, $value);
+              }
+            }
+            elseif ($replace_key === $value) {
+              $value = $replace_value;
+            }
+          }
+          if ($key === $replace_key) {
+            $template_elements[$replace_value] = $value;
+            unset($template_elements[$key]);
+          }
+
+        }
+
+      }
+
+
     }
   }
 

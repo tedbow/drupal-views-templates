@@ -16,11 +16,11 @@ use Drupal\views_templates\Plugin\ViewsDuplicateBuilderBase;
  * @Plugin(
  *  id = "view_duplicator_test",
  *  default_title = "Nodes List",
- *  view_template_id = "calendar_field",
+ *  view_template_id = "simple_view",
  *  module = "views_templates_builder_test",
  *  replace_values = {
  *    "__TITLE" = "Title Changed",
- *    "__TITLE_FIELD_NAME" = "title"
+ *    "__TITLE_ID" = "title"
  *  }
  * )
  */
@@ -29,7 +29,7 @@ class ViewDuplicatorTest extends ViewsDuplicateBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function alterViewTemplateAfterCreation(&$view_template, $options) {
+  public function alterViewTemplateAfterCreation(&$view_template, $options = NULL) {
     parent::alterViewTemplateAfterCreation($view_template, $options);
     // Make a simple change. This one goes to 11!
     $view_template['display']['default']['display_options']['pager']['options']['items_per_page'] = $options['pager_count'];
