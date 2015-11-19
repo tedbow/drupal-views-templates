@@ -39,18 +39,6 @@ class ViewTemplateForm extends FormBase {
     );
   }
 
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function actions(array $form, FormStateInterface $form_state) {
-    $actions['submit'] = array(
-      '#type' => 'submit',
-      '#value' => $this->t('Continue'),
-    );
-    return $actions;
-  }
-
   /**
    * {@inheritdoc}
    */

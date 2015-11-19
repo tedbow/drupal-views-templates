@@ -1,11 +1,11 @@
 <?php
 /**
  * @file
- * Contains \Drupal\views_template\Annotation\ViewsBuilder.
+ * Contains \Drupal\views_templates\Annotation\ViewsBuilder.
  */
 
 
-namespace Drupal\views_template\Annotation;
+namespace Drupal\views_templates\Annotation;
 
 
 use Drupal\Component\Annotation\Plugin;
@@ -57,5 +57,25 @@ class ViewsBuilder extends Plugin {
    * @var string
    */
   public $base_table;
+
+  /**
+   * The module that provides the template.
+   *
+   * @var string
+   */
+  public $module;
+
+  /**
+   * Keys and values to replaced in the Views Template.
+   * @var array
+   */
+  public $replace_values;
+
+  /**
+   * Id of Views template.
+   *
+   * @var string
+   */
+  public $view_template_id;
 
 }

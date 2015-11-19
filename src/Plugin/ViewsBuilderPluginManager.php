@@ -30,9 +30,7 @@ class ViewsBuilderPluginManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/ViewsTemplateBuilder', $namespaces, $module_handler, 'Drupal\views_templates\Plugin\ViewsBuilderPluginInterface', 'Drupal\Component\Annotation\Plugin');
-    // @todo Figure why Drupal\views_template\Annotation\ViewsBuilder is not working.
-    //parent::__construct('Plugin/ViewsTemplateBuilder', $namespaces, $module_handler, 'Drupal\views_templates\Plugin\ViewsBuilderPluginInterface', 'Drupal\views_template\Annotation\ViewsBuilder');
+    parent::__construct('Plugin/ViewsTemplateBuilder', $namespaces, $module_handler, 'Drupal\views_templates\Plugin\ViewsBuilderPluginInterface', 'Drupal\views_templates\Annotation\ViewsBuilder');
     $this->alterInfo('views_template_builder_info');
     $this->setCacheBackend($cache_backend, 'views_template_builder');
   }

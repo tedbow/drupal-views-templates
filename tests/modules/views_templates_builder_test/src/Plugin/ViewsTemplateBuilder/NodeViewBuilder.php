@@ -15,12 +15,11 @@ use Drupal\views_templates\Plugin\ViewsBuilderBase;
  *
  * @todo Switch to our own annotation in ViewsBuilderPluginManager
  *
- * @Plugin(
+ * @ViewsBuilder(
  *  id = "node_builder",
  *  admin_label = "Node View",
  *  description = "A Test Node View",
  *  base_table = "node_field_data",
- *  default_title = "Nodes List"
  * )
  */
 class NodeViewBuilder extends ViewsBuilderBase {

@@ -38,7 +38,7 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
       $plugin_definition,
       $container->get('views_templates.loader')
     );
-  }
+}
 
   /**
    * {@inheritdoc}
@@ -114,8 +114,11 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
    * After View Template has been created the Builder should alter it some how.
    *
    * @param \Drupal\views_templates\Entity\ViewTemplate $view_template
+   *
+   * @param array $options
+   *  Options for altering
    */
-  protected function alterViewTemplateAfterCreation(&$view_template, $options = NULL) {
+  protected function alterViewTemplateAfterCreation(array &$view_template, $options = NULL) {
     if ($replace_values = $this->getDefinitionValue('replace_values')) {
       $this->replaceTemplateKeyAndValues($view_template, $replace_values);
     }
@@ -140,28 +143,25 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
       if (is_array($value)) {
         $this->replaceTemplateKeyAndValues($value, $replace_values);
       }
-      else {
-        foreach ($replace_values as $replace_key => $replace_value) {
-          if (!is_array($value)) {
-            if (is_string($value)) {
-              if (stripos($value,$replace_key) !== FALSE) {
-                $value = str_replace($replace_key, $replace_value, $value);
-              }
-            }
-            elseif ($replace_key === $value) {
-              $value = $replace_value;
+      foreach ($replace_values as $replace_key => $replace_value) {
+        if (!is_array($value)) {
+          if (is_string($value)) {
+            if (stripos($value, $replace_key) !== FALSE) {
+              $value = str_replace($replace_key, $replace_value, $value);
             }
           }
-          if ($key === $replace_key) {
-            $template_elements[$replace_value] = $value;
-            unset($template_elements[$key]);
+          elseif ($replace_key === $value) {
+            $value = $replace_value;
           }
-
         }
-
+        if ($key === $replace_key) {
+          // NULL is used in replace value to remove keys from template.
+          if ($replace_value !== NULL) {
+            $template_elements[$replace_value] = $value;
+          }
+          unset($template_elements[$key]);
+        }
       }
-
-
     }
   }
 

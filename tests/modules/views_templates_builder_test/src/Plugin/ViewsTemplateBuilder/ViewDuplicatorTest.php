@@ -13,9 +13,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\views_templates\Plugin\ViewsDuplicateBuilderBase;
 
 /**
- * @Plugin(
+ * @ViewsBuilder(
  *  id = "view_duplicator_test",
- *  default_title = "Nodes List",
  *  view_template_id = "simple_view",
  *  module = "views_templates_builder_test",
  *  replace_values = {
@@ -29,7 +28,7 @@ class ViewDuplicatorTest extends ViewsDuplicateBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function alterViewTemplateAfterCreation(&$view_template, $options = NULL) {
+  public function alterViewTemplateAfterCreation(array &$view_template, $options = NULL) {
     parent::alterViewTemplateAfterCreation($view_template, $options);
     // Make a simple change. This one goes to 11!
     $view_template['display']['default']['display_options']['pager']['options']['items_per_page'] = $options['pager_count'];
