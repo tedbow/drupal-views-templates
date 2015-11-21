@@ -16,7 +16,8 @@ use Drupal\views_templates\Plugin\ViewsDuplicateBuilderBase;
  * @Plugin(
  *  id = "view_duplicator_test",
  *  default_title = "Nodes List",
- *  view_template_id = "simpliest"
+ *  view_template_id = "calendar_field",
+ *  module = "views_templates_builder_test"
  * )
  */
 class ViewDuplicatorTest extends ViewsDuplicateBuilderBase{
@@ -26,7 +27,7 @@ class ViewDuplicatorTest extends ViewsDuplicateBuilderBase{
    */
   public function alterViewTemplateAfterCreation(&$view_template, $options) {
     // Make a simple change. This one goes to 11!
-    $view_template->display['default']['display_options']['pager']['options']['items_per_page'] = $options['pager_count'];
+    $view_template['display']['default']['display_options']['pager']['options']['items_per_page'] = $options['pager_count'];
   }
 
   public function buildConfigurationForm($form, FormStateInterface $form_state) {

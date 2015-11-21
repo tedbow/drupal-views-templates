@@ -8,38 +8,51 @@
 namespace Drupal\views_templates\Plugin;
 
 
+use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\views\Entity\View;
 use Drupal\views_templates\Entity\ViewTemplate;
+use Drupal\views_templates\ViewsTemplateLoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements ViewsDuplicateBuilderPluginInterface{
+abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements ViewsDuplicateBuilderPluginInterface, ContainerFactoryPluginInterface {
+
+  /** @var \Drupal\views_templates\ViewsTemplateLoaderInterface $template_loader */
+  protected $template_loader;
+
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ViewsTemplateLoaderInterface $loader) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->template_loader = $loader;
+
+  }
+
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('views_templates.loader')
+    );
+  }
 
   /**
    * {@inheritdoc}
    */
   public function createView($options = NULL) {
-    $view_template = $this->duplicateViewTemplate();
-    $view_template->set('entityTypeId', 'view');
-    $view_template->set('id', $options['id']);
-    $view_template->set('label', $options['label']);
-    $view_template->set('description', $options['description']);
+    $view_template = $this->loadTemplate();
+    $view_template['id'] = $options['id'];
+    $view_template['label'] = $options['label'];
+    $view_template['description'] = $options['description'];
     $this->alterViewTemplateAfterCreation($view_template, $options);
-    return $view_template;
+    return View::create($view_template);
   }
 
-  /**
-   * Load View Template and then manually change it to a View.
-   *
-   * @todo Is this actually safe to do?
-   *
-   * @return \Drupal\Views\Entity\View
-   */
-  protected function duplicateViewTemplate() {
-
-    /** @var \Drupal\views_templates\Entity\ViewTemplate $view_template */
-    $view_template = ViewTemplate::load($this->getViewTemplateId())->createDuplicate();
-
-    return $view_template;
-  }
 
   /**
    * {@inheritdoc}
@@ -63,12 +76,28 @@ abstract class ViewsDuplicateBuilderBase extends ViewsBuilderBase implements Vie
     return $this->loadViewsTemplateValue('description');
   }
 
+  /**
+   * Return value from template.
+   *
+   * @param $key
+   *
+   * @return null|mixed
+   */
   protected function loadViewsTemplateValue($key) {
-    $view_template = $this->duplicateViewTemplate();
-    if (isset($view_template->$key)) {
-      return $view_template->$key;
+    $view_template = $this->loadTemplate();
+    if (isset($view_template[$key])) {
+      return $view_template[$key];
     }
     return NULL;
+  }
+
+  /**
+   * Load template from service.
+   *
+   * @return object
+   */
+  protected function loadTemplate() {
+    return $this->template_loader->load($this);
   }
 
   /**

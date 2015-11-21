@@ -21,6 +21,4 @@ interface ViewsDuplicateBuilderPluginInterface extends ViewsBuilderPluginInterfa
    */
   public function getViewTemplateId();
 
-
-
 }
