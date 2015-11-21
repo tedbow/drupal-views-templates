@@ -9,6 +9,7 @@ namespace Drupal\views_templates\Plugin;
 
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Creates a common interface for Views Builder classes.
@@ -42,7 +43,7 @@ interface ViewsBuilderPluginInterface extends  PluginInspectionInterface {
    *
    * @return mixed
    */
-  public function getDefinition($key);
+  public function getDefinitionValue($key);
 
   /**
    * Create a View. Don't save it.
@@ -51,5 +52,7 @@ interface ViewsBuilderPluginInterface extends  PluginInspectionInterface {
    * @return \Drupal\views\ViewEntityInterface
    */
   public function createView($options = NULL);
+
+  public function buildConfigurationForm($form, FormStateInterface $form_state);
 
 }

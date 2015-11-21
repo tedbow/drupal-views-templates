@@ -7,6 +7,7 @@
 
 namespace Drupal\views_templates\Plugin;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\views\Entity\View;
 use Drupal\views_templates\Plugin\ViewsBuilderPluginInterface;
@@ -22,24 +23,24 @@ abstract  class ViewsBuilderBase extends PluginBase implements ViewsBuilderPlugi
    * {@inheritdoc}
    */
   public function getBaseTable() {
-    return $this->getDefinition('base_table');
+    return $this->getDefinitionValue('base_table');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getAdminLabel() {
-    return $this->getDefinition('admin_label');
+    return $this->getDefinitionValue('admin_label');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->getDefinition('description');
+    return $this->getDefinitionValue('description');
   }
 
-  public function getDefinition($key) {
+  public function getDefinitionValue($key) {
     $def = $this->getPluginDefinition();
     return $def[$key];
   }
@@ -56,6 +57,13 @@ abstract  class ViewsBuilderBase extends PluginBase implements ViewsBuilderPlugi
       'base_table' => $this->getBaseTable(),
     ];
     return View::create($view_values);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm($form, FormStateInterface $form_state) {
+    return [];
   }
 
 

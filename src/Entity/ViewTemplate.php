@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\views_templates\Entity\FilterFormat.
+ * Contains \Drupal\views_templates\Entity\ViewTemplate.
  */
 
 namespace Drupal\views_templates\Entity;

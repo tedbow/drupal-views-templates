@@ -103,6 +103,8 @@ class ViewTemplateForm extends FormBase {
       '#value' => $builder->getPluginId(),
     ];
 
+    $form += $builder->buildConfigurationForm($form, $form_state);
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Create View'),
