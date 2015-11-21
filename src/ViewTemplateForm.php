@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Contains \Drupal\views_templates\ViewTemplateForm.
@@ -7,51 +6,40 @@
 
 namespace Drupal\views_templates;
 
-use Drupal\Core\Entity\EntityForm;
+use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Element\View;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\views_templates\Plugin\ViewsBuilderPluginInterface;
 
 /**
- * Form controller for the view template entity edit forms.
+ * Form controller for the view template entity add forms.
  */
-class ViewTemplateForm extends EntityForm {
+class ViewTemplateForm extends FormBase {
 
   /**
-   * {@inheritdoc}
+   * @var \Drupal\Component\Plugin\PluginManagerInterface
    */
-  protected function prepareEntity() {
-    // Do not prepare the entity while it is being added.
-  }
+  protected $builder_manager;
 
   /**
-   * {@inheritdoc}
+   * Constructs a new \Drupal\views_templates\Controller\ViewsBuilderController
+   * object.
+   *
+   * @param \Drupal\Component\Plugin\PluginManagerInterface
+   *   The Views Builder Plugin Interface.
    */
-  public function form(array $form, FormStateInterface $form_state) {
-    parent::form($form, $form_state);
-
-    $form['#title'] = $this->t('Duplicate of @label', array('@label' => $this->entity->label()));
-
-    $form['label'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('View name'),
-      '#required' => TRUE,
-      '#size' => 32,
-      '#maxlength' => 255,
-      '#default_value' => $this->entity->label(),
-    );
-    $form['id'] = array(
-      '#type' => 'machine_name',
-      '#maxlength' => 128,
-      '#machine_name' => array(
-        'exists' => '\Drupal\views\Views::getView',
-        'source' => array('label'),
-      ),
-      '#default_value' => '',
-      '#description' => $this->t('A unique machine-readable name for this View. It must only contain lowercase letters, numbers, and underscores.'),
-    );
-
-    return $form;
+  public function __construct(PluginManagerInterface $builder_manager) {
+    $this->builder_manager = $builder_manager;
   }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('plugin.manager.views_templates.builder')
+    );
+  }
+
 
   /**
    * {@inheritdoc}
@@ -68,14 +56,73 @@ class ViewTemplateForm extends EntityForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->entity = $this->entity->createDuplicate();
-    $this->entity->set('label', $form_state->getValue('label'));
-    $this->entity->set('id', $form_state->getValue('id'));
-    $this->entity->set('entityTypeId', 'view');
-    $this->entity->save();
+
+    $builder = $this->createBuilder($form_state->getValue('builder_id'));
+    $values = $form_state->cleanValues()->getValues();
+    $view = $builder->createView($values);
+    $view->save();
+
 
     // Redirect the user to the view admin form.
-    $form_state->setRedirectUrl($this->entity->urlInfo('edit-form'));
+    $form_state->setRedirectUrl($view->urlInfo('edit-form'));
   }
+
+  public function buildForm(array $form, FormStateInterface $form_state, $view_template = NULL) {
+
+    $builder = $this->createBuilder($view_template);
+    $form['#title'] = $this->t('Duplicate of @label', array('@label' => $builder->getAdminLabel()));
+
+
+
+    $form['label'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('View name'),
+      '#required' => TRUE,
+      '#size' => 32,
+      '#maxlength' => 255,
+      '#default_value' => $builder->getAdminLabel(),
+    );
+    $form['id'] = array(
+      '#type' => 'machine_name',
+      '#maxlength' => 128,
+      '#machine_name' => array(
+        'exists' => '\Drupal\views\Views::getView',
+        'source' => array('label'),
+      ),
+      '#default_value' => '',
+      '#description' => $this->t('A unique machine-readable name for this View. It must only contain lowercase letters, numbers, and underscores.'),
+    );
+
+    $form['description'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Description'),
+      '#default_value' => $builder->getDescription(),
+    ];
+    $form['builder_id'] = [
+      '#type' => 'value',
+      '#value' => $builder->getPluginId(),
+    ];
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Create View'),
+    ];
+
+    return $form;
+  }
+
+  public function getFormId() {
+    return 'views_templates_add';
+  }
+
+  /**
+   * @param $plugin_id
+   *
+   * @return ViewsBuilderPluginInterface;
+   */
+  public function createBuilder($plugin_id) {
+    return $this->builder_manager->createInstance($plugin_id);
+  }
+
 
 }

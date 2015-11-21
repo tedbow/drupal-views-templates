@@ -1,15 +1,17 @@
-views_templates.add:
-  path: '/admin/structure/views/add-template'
-  defaults:
-    _entity_list: 'view_template'
-    _title: 'Add view from template'
-  requirements:
-    _entity_create_access: view
-
-entity.view_template.create_from_template:
+views_templates.create_from_template:
   path: '/admin/structure/views/template/{view_template}/add'
   defaults:
-    _entity_form: view_template.create_from_template
-    _title: 'Create from template'
+    _form: '\Drupal\views_templates\ViewTemplateForm'
+    _title: 'Create from View template'
   requirements:
-    _entity_access: view_template.view
+    _permission: 'administer views'
+
+views_templates.list:
+  path: '/admin/structure/views/template/list'
+  defaults:
+    _controller: '\Drupal\views_templates\Controller\ViewsBuilderController::templateList'
+    _title: 'Add view from template'
+  requirements:
+    _permission: 'administer views'
+
+
