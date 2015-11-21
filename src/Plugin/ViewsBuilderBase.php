@@ -17,7 +17,7 @@ use Drupal\views_templates\Plugin\ViewsBuilderPluginInterface;
  * This class get Views information for Plugin definition.
  * Extending classes can use derivatives to make many plugins.
  */
-class ViewsBuilderBase extends PluginBase implements ViewsBuilderPluginInterface {
+abstract  class ViewsBuilderBase extends PluginBase implements ViewsBuilderPluginInterface {
   /**
    * {@inheritdoc}
    */
