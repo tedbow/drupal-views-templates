@@ -39,6 +39,13 @@ class ViewsBuilderController extends ControllerBase{
       $container->get('plugin.manager.views_templates.builder')
     );
   }
+
+  /**
+   * Create template list table.
+   *
+   * @return array
+   *  Render array of template list.
+   */
   public function templateList() {
     $table = array(
       '#type' => 'table',

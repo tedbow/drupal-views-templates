@@ -11,19 +11,17 @@ use Drupal\views_templates\Plugin\ViewsDuplicateBuilderPluginInterface;
 
 
 /**
- * Class ViewsTemplateLoader.
+ * Service class to load templates from the file system.
  *
- * @package Drupal\views_templates
+ *
  */
 class ViewsTemplateLoader implements ViewsTemplateLoaderInterface {
+
   /**
-   * Constructor.
+   * {@inheritdoc}
    */
-  public function __construct() {
-
-  }
-
   public function load(ViewsDuplicateBuilderPluginInterface $builder) {
+    // @todo through errors template file is not available.
     $templates = &drupal_static(__FUNCTION__, array());
 
     $template_id = $builder->getViewTemplateId();

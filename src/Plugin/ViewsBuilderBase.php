@@ -40,6 +40,9 @@ abstract  class ViewsBuilderBase extends PluginBase implements ViewsBuilderPlugi
     return $this->getDefinitionValue('description');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getDefinitionValue($key) {
     $def = $this->getPluginDefinition();
     return $def[$key];

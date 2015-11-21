@@ -9,12 +9,17 @@ namespace Drupal\views_templates;
 use Drupal\views_templates\Plugin\ViewsDuplicateBuilderPluginInterface;
 
 /**
- * Interface ViewsTemplateLoaderInterface.
- *
- * @package Drupal\views_templates
+ * Provide interface for loading Views Templates for a builder.
  */
 interface ViewsTemplateLoaderInterface {
 
+  /**
+   * Load template array values from file system for builder plugin.
+   *
+   * @param \Drupal\views_templates\Plugin\ViewsDuplicateBuilderPluginInterface $builder
+   *
+   * @return array
+   */
   public function load(ViewsDuplicateBuilderPluginInterface $builder);
 
 }

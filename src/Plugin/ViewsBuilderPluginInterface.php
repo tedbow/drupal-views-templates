@@ -53,6 +53,14 @@ interface ViewsBuilderPluginInterface extends  PluginInspectionInterface {
    */
   public function createView($options = NULL);
 
+  /**
+   * Return form elements of extra configuration when adding View from template.
+   *
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return mixed
+   */
   public function buildConfigurationForm($form, FormStateInterface $form_state);
 
 }

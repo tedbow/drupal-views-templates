@@ -74,7 +74,7 @@ display:
         options:
           view_mode: teaser
       fields:
-        title:
+        __TITLE_FIELD_NAME:
           id: title
           table: node_field_data
           field: title
@@ -149,7 +149,7 @@ display:
           expose:
             label: ''
           granularity: second
-      title: simpliest
+      title: __TITLE
       header: {  }
       footer: {  }
       empty: {  }
