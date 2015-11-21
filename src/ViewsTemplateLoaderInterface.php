@@ -6,6 +6,7 @@
  */
 
 namespace Drupal\views_templates;
+
 use Drupal\views_templates\Plugin\ViewsDuplicateBuilderPluginInterface;
 
 /**

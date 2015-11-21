@@ -2,7 +2,8 @@
 
 /**
  * @file
- * Contains \Drupal\views_templates\Plugin\ViewsTemplateBuilder\ViewsBuilderBase.
+ * Contains
+ * \Drupal\views_templates\Plugin\ViewsTemplateBuilder\ViewsBuilderBase.
  */
 
 namespace Drupal\views_templates\Plugin;
@@ -10,7 +11,6 @@ namespace Drupal\views_templates\Plugin;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\views\Entity\View;
-use Drupal\views_templates\Plugin\ViewsBuilderPluginInterface;
 
 /**
  * Base builder for View Templates
@@ -18,7 +18,7 @@ use Drupal\views_templates\Plugin\ViewsBuilderPluginInterface;
  * This class get Views information for Plugin definition.
  * Extending classes can use derivatives to make many plugins.
  */
-abstract  class ViewsBuilderBase extends PluginBase implements ViewsBuilderPluginInterface {
+abstract class ViewsBuilderBase extends PluginBase implements ViewsBuilderPluginInterface {
   /**
    * {@inheritdoc}
    */

@@ -24,7 +24,7 @@ use Drupal\views_templates\Plugin\ViewsDuplicateBuilderBase;
  *  }
  * )
  */
-class ViewDuplicatorTest extends ViewsDuplicateBuilderBase{
+class ViewDuplicatorTest extends ViewsDuplicateBuilderBase {
 
   /**
    * {@inheritdoc}

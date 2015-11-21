@@ -9,9 +9,8 @@ namespace Drupal\views_templates;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\Element\View;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\views_templates\Plugin\ViewsBuilderPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form controller for the view template entity add forms.
@@ -56,23 +55,18 @@ class ViewTemplateForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
     $builder = $this->createBuilder($form_state->getValue('builder_id'));
     $values = $form_state->cleanValues()->getValues();
     $view = $builder->createView($values);
     $view->save();
-
 
     // Redirect the user to the view admin form.
     $form_state->setRedirectUrl($view->urlInfo('edit-form'));
   }
 
   public function buildForm(array $form, FormStateInterface $form_state, $view_template = NULL) {
-
     $builder = $this->createBuilder($view_template);
     $form['#title'] = $this->t('Duplicate of @label', array('@label' => $builder->getAdminLabel()));
-
-
 
     $form['label'] = array(
       '#type' => 'textfield',

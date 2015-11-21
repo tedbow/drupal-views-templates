@@ -6,6 +6,7 @@
 
 
 namespace Drupal\views_templates_builder_test\Plugin\ViewsTemplateBuilder;
+
 use Drupal\views_templates\Plugin\ViewsBuilderBase;
 
 
@@ -47,20 +48,20 @@ class NodeViewBuilder extends ViewsBuilderBase {
     $display_options['fields']['title']['settings']['link_to_entity'] = 1;
     $display_options['fields']['title']['plugin_id'] = 'field';
 
-   // $executable = $view->getExecutable();
+    // $executable = $view->getExecutable();
 
     // Display: Master
     //$default_display = $executable->newDisplay('default', 'Master', 'default');
     $view->addDisplay('page');
 
 
-/*
-    foreach ($display_options['default'] as $option => $value) {
-      $master->setOption($option, $value);
-    }
-*/
+    /*
+        foreach ($display_options['default'] as $option => $value) {
+          $master->setOption($option, $value);
+        }
+    */
 
-   // $executable->save();
+    // $executable->save();
     return $view;
 
   }

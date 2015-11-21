@@ -8,7 +8,6 @@
 namespace Drupal\views_template\Annotation;
 
 
-
 use Drupal\Component\Annotation\Plugin;
 
 /**
@@ -29,6 +28,7 @@ class ViewsBuilder extends Plugin {
 
   /**
    * Description for list page
+   *
    * @var string
    *
    * @ingroup plugin_translatable
@@ -53,6 +53,7 @@ class ViewsBuilder extends Plugin {
 
   /**
    * Base table of View.
+   *
    * @var string
    */
   public $base_table;

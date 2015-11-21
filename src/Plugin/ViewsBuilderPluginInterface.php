@@ -14,7 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Creates a common interface for Views Builder classes.
  */
-interface ViewsBuilderPluginInterface extends  PluginInspectionInterface {
+interface ViewsBuilderPluginInterface extends PluginInspectionInterface {
 
   /**
    * Returns base table id.
@@ -39,6 +39,7 @@ interface ViewsBuilderPluginInterface extends  PluginInspectionInterface {
 
   /**
    * Get a value from the plugin definition.
+   *
    * @param $key
    *
    * @return mixed
@@ -47,6 +48,7 @@ interface ViewsBuilderPluginInterface extends  PluginInspectionInterface {
 
   /**
    * Create a View. Don't save it.
+   *
    * @param null $options
    *
    * @return \Drupal\views\ViewEntityInterface

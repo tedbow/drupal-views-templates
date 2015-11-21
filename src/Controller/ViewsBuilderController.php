@@ -13,7 +13,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ViewsBuilderController extends ControllerBase{
+class ViewsBuilderController extends ControllerBase {
 
   /**
    * @var \Drupal\Component\Plugin\PluginManagerInterface
@@ -70,9 +70,9 @@ class ViewsBuilderController extends ControllerBase{
           '#type' => 'link',
           '#title' => t('Add'),
           '#url' => Url::fromRoute('views_templates.create_from_template',
-              [
-                'view_template' => $plugin_id,
-              ]
+            [
+              'view_template' => $plugin_id,
+            ]
           ),
         ],
       ];
